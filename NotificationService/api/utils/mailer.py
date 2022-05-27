@@ -1,12 +1,13 @@
 import smtplib
 from email.message import EmailMessage
+import os
 
 # from db import get_emails
 from .email_template import listingTemplate, welcomeTemplate
 
 smtp_server = "smtp.hostinger.com"
 sender_email = "info@housingo.nl"  # Enter your address
-password = "Housingo2022#"
+password = os.environ.get["EMAIL_PASSWORD"]
 email = EmailMessage()
 
 email["From"] = "info@housingo.nl"
