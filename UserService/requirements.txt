@@ -1,0 +1,9 @@
+fastapi==0.78.0
+passlib==1.7.4
+pydantic==1.9.0
+PyJWT==2.4.0
+pymongo==4.0.1
+python-dotenv==0.20.0
+starlette>=0.17.1
+uvicorn==0.17.4
+pymongo[srv]>=0.0.1

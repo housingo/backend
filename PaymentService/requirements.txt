@@ -1,0 +1,6 @@
+fastapi==0.78.0
+pymongo==4.0.1
+python-dotenv==0.20.0
+stripe==2.66.0
+uvicorn==0.17.4
+pymongo[srv]>=0.0.1

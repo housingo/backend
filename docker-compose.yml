@@ -1,0 +1,20 @@
+version: '2'
+services:
+  housingo:
+    build: .
+    hostname: localhost
+    restart: always
+    environment:
+      - DB_CONNECTION_STRING=postgresql://postgres:Housingo2022#@34.141.204.24:5432/housingodb
+      - JWT_SECRET=housingo1234#asd
+      - STRIPE_KEY_LIVE=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
+      - STRIPE_KEY_TEST=sk_test_51KRM7EDZMSJnOXe4N6AmuTC8h5EAbYgZyRrDluQ3FOSZlc23wrI0aJJhAkO2JikZul85LeOvpIg0RhFoAsrrwRGq008FEfmSka
+      - PORT=8000
+    ports:
+      - "8000:8000"
+    networks:
+      - housingo
+
+networks:
+  housingo:
+    driver: bridge

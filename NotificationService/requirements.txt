@@ -1,0 +1,7 @@
+fastapi==0.78.0
+pydantic==1.9.0
+pymongo==4.0.1
+python-dotenv==0.20.0
+requests==2.27.1
+uvicorn==0.17.4
+pymongo[srv]>=0.0.1
