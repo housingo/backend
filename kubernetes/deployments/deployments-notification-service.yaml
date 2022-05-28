@@ -36,5 +36,16 @@ spec:
       - name: housingo
         image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/notification-service:staging
         imagePullPolicy: Always
+        env:
+        - name: DB_STRING 
+          value: ${{ secrets.DB_STRING }}
+        - name: PORT
+          value: "8000"
+        - name: JWT_SECRET
+          value: ${{ secrets.JWT_SECRET }}
+        - name: STRIPE_KEY_LIVE
+          value: ${{ secrets.STRIPE_KEY_LIVE }}
+        - name: STRIPE_KEY_TEST
+          value: ${{ secrets.STRIPE_KEY_TEST }}
         ports:
         - containerPort: 8002
