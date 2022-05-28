@@ -4,7 +4,7 @@ on:
     branches:
       - 'main'
     paths:
-      - kubernetes/deployment/**
+      - kubernetes/deployments/**
       - .github/workflows/kubectl-apply.yml
 
 concurrency: deploy-staging
