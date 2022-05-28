@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - user-service/**
+      - .github/workflows/user-service.yml
 
 jobs:
   testing:
