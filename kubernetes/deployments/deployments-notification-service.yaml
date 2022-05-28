@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: housingo
-        image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/notification-service:staging
+        image: gcr.io/housingo-350313/notification-service:staging
         imagePullPolicy: Always
         env:
         - name: DB_STRING 
