@@ -11,9 +11,9 @@ on:
 env:
   SERVICE_NAME: user-service
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GKE_ZONE: europe-west4-a   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: user-service-deployment # TODO: update to deployment name
-  GKE_CLUSTER: housingo    # TODO: update to cluster name
+  GKE_ZONE: europe-west4-a
+  DEPLOYMENT_NAME: user-service-deployment
+  GKE_CLUSTER: housingo
 
 jobs:
   build:
