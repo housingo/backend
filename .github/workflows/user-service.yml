@@ -4,6 +4,8 @@ on:
     paths:
       - user-service/**
       - .github/workflows/user-service.yml
+      - .github/workflows/composite/build/action.yml
+      - .github/workflows/composite/deploy/action.yml
 
 env:
   SERVICE_NAME: user-service
