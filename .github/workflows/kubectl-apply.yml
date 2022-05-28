@@ -1,5 +1,4 @@
 name: Deploy Staging to Google Kubernetes Engine
-
 on:
   push:
     branches:
@@ -38,4 +37,4 @@ jobs:
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
-        run: kubectl apply -f ./kubernetes/deployment
+        run: kubectl apply -f ./kubernetes/deployments
