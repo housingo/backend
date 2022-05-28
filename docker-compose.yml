@@ -1,7 +1,7 @@
 version: '2'
 services:
   user-service:
-    build: ./UserService
+    build: ./user-service
     hostname: localhost
     restart: always
     environment:
@@ -17,7 +17,7 @@ services:
       - housingo
 
   notificiation-service:
-    build: ./NotificationService
+    build: ./notification-service
     hostname: localhost
     restart: always
     environment:
@@ -34,7 +34,7 @@ services:
       - housingo
 
   payment-service:
-    build: ./PaymentService
+    build: ./payment-service
     hostname: localhost
     restart: always
     environment:
