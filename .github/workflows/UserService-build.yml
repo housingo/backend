@@ -9,7 +9,7 @@ on:
       - '.github/workflows/UserService-build.yml'
 
 env:
-  SERVICE_NAME: user-service
+  SERVICE_NAME: UserService
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_ZONE: europe-west4-a
   DEPLOYMENT_NAME: user-service-deployment

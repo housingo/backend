@@ -26,6 +26,6 @@ runs:
       uses: docker/build-push-action@v2
       with:
         push: true
-        file: ./backend/${{ inputs.service_name }}/Dockerfile
+        file: ./${{ inputs.service_name }}/Dockerfile
         tags: |
           gcr.io/${{ inputs.project_id }}/${{ inputs.service_name }}:staging
