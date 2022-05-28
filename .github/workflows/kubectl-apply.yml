@@ -35,6 +35,6 @@ jobs:
           location: ${{ env.GKE_ZONE }}
           credentials: ${{ secrets.GOOGLE_KUBERNETES_SERVICE_ACCOUNT }}
 
-      # Deploy the Docker image to the GKE cluster
+      # Deploy the Docker image to the GKE clusters
       - name: Deploy
         run: kubectl apply -f ./kubernetes/deployments
