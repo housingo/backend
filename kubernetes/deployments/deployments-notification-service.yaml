@@ -3,34 +3,34 @@ kind: Service
 metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  name: housingo-notification-service
+  name: notification-service-service
   labels:
-    app: housingo-notification-service
+    app: notification-service-service
 spec:
   type: NodePort
   ports:
   - port: 8002
-    name: housingo-notification-service
+    name: notification-service-service
     targetPort: 8002
   selector:
-    app: housingo-notification-service
+    app: notification-service-service
 
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: housingo-notification-deployment
+  name: notification-service-deployment
   labels:
-    app: housingo-notification-deployment
+    app: notification-service-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: housingo-notification-deployment
+      app: notification-service-deployment
   template:
     metadata:
       labels:
-        app: housingo-notification-deployment
+        app: notification-service-deployment
     spec:
       containers:
       - name: housingo
@@ -49,3 +49,10 @@ spec:
           value: ${{ secrets.STRIPE_KEY_TEST }}
         ports:
         - containerPort: 8002
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limit:
+            memory: "128Mi"
+            cpu: "250m"

@@ -3,34 +3,34 @@ kind: Service
 metadata:
   annotations:
     service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
-  name: housingo-payment-deployment
+  name: payment-service-service
   labels:
-    app: housingo-payment-deployment
+    app: payment-service-service
 spec:
   type: NodePort
   ports:
   - port: 8001
-    name: housingo-payment-deployment
+    name: payment-service-service
     targetPort: 8001
   selector:
-    app: housingo-payment-deployment
+    app: payment-service-service
 
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: housingo-payment-deployment
+  name: payment-service-deployment
   labels:
-    app: housingo-payment-deployment
+    app: payment-service-deployment
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: housingo-payment-deployment
+      app: payment-service-deployment
   template:
     metadata:
       labels:
-        app: housingo-payment-deployment
+        app: payment-service-deployment
     spec:
       containers:
       - name: housingo
@@ -49,3 +49,10 @@ spec:
           value: ${{ secrets.STRIPE_KEY_TEST }}
         ports:
         - containerPort: 8001
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limit:
+            memory: "128Mi"
+            cpu: "250m"
