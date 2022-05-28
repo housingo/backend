@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: housingo
-        image: raresasd/housingo-user-service:latest
+        image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/user-service:staging
         imagePullPolicy: Always
         env:
         - name: DB_STRING 

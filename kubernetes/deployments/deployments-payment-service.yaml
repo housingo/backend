@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: housingo
-        image: raresasd/housingo-payment-service:latest
+        image: gcr.io/${{ secrets.GOOGLE_PROJECT_ID }}/payment-service:staging
         imagePullPolicy: Always
         ports:
         - containerPort: 8001
