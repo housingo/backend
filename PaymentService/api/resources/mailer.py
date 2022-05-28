@@ -7,7 +7,7 @@ from .email_template import listingTemplate, welcomeTemplate
 
 smtp_server = "smtp.hostinger.com"
 sender_email = "info@housingo.nl"  # Enter your address
-password = os.environ.get["EMAIL_PASSWORD"]
+password = os.environ.get("EMAIL_PASSWORD")
 email = EmailMessage()
 
 email["From"] = "info@housingo.nl"

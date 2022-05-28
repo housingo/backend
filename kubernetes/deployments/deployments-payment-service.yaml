@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  name: housingo-payment-deployment
+  labels:
+    app: housingo-payment-deployment
+spec:
+  type: NodePort
+  ports:
+  - port: 8001
+    name: housingo-payment-deployment
+    targetPort: 8001
+  selector:
+    app: housingo-payment-deployment
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: housingo-payment-deployment
+  labels:
+    app: housingo-payment-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: housingo-payment-deployment
+  template:
+    metadata:
+      labels:
+        app: housingo-payment-deployment
+    spec:
+      containers:
+      - name: housingo
+        image: raresasd/housingo-payment-service:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001

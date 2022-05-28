@@ -1,17 +1,52 @@
 version: '2'
 services:
-  housingo:
-    build: .
+  user-service:
+    build: ./UserService
     hostname: localhost
     restart: always
     environment:
-      - DB_CONNECTION_STRING=postgresql://postgres:Housingo2022#@34.141.204.24:5432/housingodb
-      - JWT_SECRET=housingo1234#asd
-      - STRIPE_KEY_LIVE=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
-      - STRIPE_KEY_TEST=sk_test_51KRM7EDZMSJnOXe4N6AmuTC8h5EAbYgZyRrDluQ3FOSZlc23wrI0aJJhAkO2JikZul85LeOvpIg0RhFoAsrrwRGq008FEfmSka
-      - PORT=8000
+      - DB_STRING= $${DB_STRING)
+      - JWT_SECRET= $${JWT_SECRET}
+      - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
+      - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
+      - PORT= 8000
     ports:
       - "8000:8000"
+    image: raresasd/housingo-user-service
+    networks:
+      - housingo
+
+  notificiation-service:
+    build: ./NotificationService
+    hostname: localhost
+    restart: always
+    environment:
+      - DB_STRING= $${DB_STRING)
+      - JWT_SECRET= $${JWT_SECRET}
+      - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
+      - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
+      - PORT= 8002
+      - EMAIL_PASSWORD= $${EMAIL_PASSWORD}
+    ports:
+      - "8002:8002"
+    image: raresasd/housingo-notificiation-service
+    networks:
+      - housingo
+
+  payment-service:
+    build: ./PaymentService
+    hostname: localhost
+    restart: always
+    environment:
+      - DB_STRING= $${DB_STRING)
+      - JWT_SECRET= $${JWT_SECRET}
+      - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
+      - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
+      - PORT= 8001
+      - EMAIL_PASSWORD= $${EMAIL_PASSWORD}
+    ports:
+      - "8001:8001"
+    image: raresasd/housingo-payment-service
     networks:
       - housingo
 
