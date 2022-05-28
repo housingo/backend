@@ -36,5 +36,12 @@ spec:
       - name: housingo
         image: raresasd/housingo-user-service:latest
         imagePullPolicy: Always
+        env:
+        - name: DB_STRING 
+          key: ${{ secrets.DB_STRING }}
+        - name: PORT
+          key: "8000"
+        - name: JWT_SECRET
+          key: ${{ secrets.JWT_SECRET }}
         ports:
         - containerPort: 8000

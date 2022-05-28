@@ -12,8 +12,7 @@ concurrency: deploy-staging
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
   GKE_CLUSTER: housingo
-  GKE_ZONE: europe-west4-a
-
+  GKE_ZONE: europe-west4
 jobs:
   deploy:
     name: Deploy Kubernetes configuration
