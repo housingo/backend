@@ -9,7 +9,7 @@ services:
       - JWT_SECRET= $${JWT_SECRET}
       - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
       - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
-      - PORT= 8000
+      - PORT=8000
     ports:
       - "8000:8000"
     image: raresasd/housingo-user-service
@@ -25,7 +25,7 @@ services:
       - JWT_SECRET= $${JWT_SECRET}
       - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
       - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
-      - PORT= 8002
+      - PORT=8002
       - EMAIL_PASSWORD= $${EMAIL_PASSWORD}
     ports:
       - "8002:8002"
@@ -42,7 +42,7 @@ services:
       - JWT_SECRET= $${JWT_SECRET}
       - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
       - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
-      - PORT= 8001
+      - PORT=8001
       - EMAIL_PASSWORD= $${EMAIL_PASSWORD}
     ports:
       - "8001:8001"
