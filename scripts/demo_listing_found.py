@@ -1,4 +1,5 @@
-import pika, json
+import pika
+import json
 from datetime import datetime
 
 test_listing = {
@@ -16,5 +17,5 @@ channel.basic_publish(
     routing_key="listings",
     body=json.dumps(test_listing),
 )
-
+# cleanup connection
 connection.close()
