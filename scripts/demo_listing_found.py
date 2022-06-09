@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 test_listing = {
-    "listing_url": "https://holland2stay.com/residences.html?available_to_book=179,336&city=12345",
+    "listing_url": "https://holland2stay.com/residences/victoriapark-828.html?city=0",
     "found_at": int(datetime.timestamp(datetime.now())),
 }
 
