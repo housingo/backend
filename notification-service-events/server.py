@@ -4,7 +4,7 @@ from utils.db_mongo import insert_listing_archive
 from datetime import datetime
 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
+connection = pika.BlockingConnection(pika.ConnectionParameters(host="housingo://guest:guest@rabbitmq"))
 channel = connection.channel()
 channel.queue_declare(queue="listings")
 

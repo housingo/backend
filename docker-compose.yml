@@ -5,14 +5,13 @@ services:
     hostname: localhost
     restart: always
     environment:
-      - DB_STRING= $${DB_STRING)
-      - JWT_SECRET= $${JWT_SECRET}
-      - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
-      - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
+      - JWT_SECRET=${JWT_SECRET}
+      - STRIPE_KEY_LIVE=${STRIPE_KEY_LIVE}
+      - STRIPE_KEY_TEST=${STRIPE_KEY_TEST}
       - PORT=8000
+      - DB_STRING=${DB_STRING}
     ports:
       - "8000:8000"
-    image: raresasd/housingo-user-service
     networks:
       - housingo
 
@@ -21,15 +20,14 @@ services:
     hostname: localhost
     restart: always
     environment:
-      - DB_STRING= $${DB_STRING)
-      - JWT_SECRET= $${JWT_SECRET}
-      - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
-      - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
+      - DB_STRING=${DB_STRING}
+      - JWT_SECRET=${JWT_SECRET}
+      - STRIPE_KEY_LIVE=${STRIPE_KEY_LIVE}
+      - STRIPE_KEY_TEST=${STRIPE_KEY_TEST}
       - PORT=8002
-      - EMAIL_PASSWORD= $${EMAIL_PASSWORD}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8002:8002"
-    image: raresasd/housingo-notificiation-service
     networks:
       - housingo
 
@@ -38,15 +36,26 @@ services:
     hostname: localhost
     restart: always
     environment:
-      - DB_STRING= $${DB_STRING)
-      - JWT_SECRET= $${JWT_SECRET}
-      - STRIPE_KEY_LIVE= $${STRIPE_KEY_LIVE}
-      - STRIPE_KEY_TEST= $${STRIPE_KEY_TEST}
+      - DB_STRING=${DB_STRING}
+      - JWT_SECRET=${JWT_SECRET}
+      - STRIPE_KEY_LIVE=${STRIPE_KEY_LIVE}
+      - STRIPE_KEY_TEST=${STRIPE_KEY_TEST}
       - PORT=8001
-      - EMAIL_PASSWORD= $${EMAIL_PASSWORD}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8001:8001"
-    image: raresasd/housingo-payment-service
+    networks:
+      - housingo
+
+  rabbit-mq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
     networks:
       - housingo
 
