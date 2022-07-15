@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="WS-221.5787.30">
+    <data-source name="Housingo DB" uuid="affba9a9-4035-4636-bd2a-e48409eac46b">
+      <database-info product="Mongo DB" version="5.0.9" jdbc-version="4.2" driver-name="MongoDB JDBC Driver" driver-version="1.15" dbms="MONGO" exact-version="5.0.9" exact-driver-version="1.15" />
+      <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>housingo</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="schema" qname="housingo" />
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
+  </component>
+</project>

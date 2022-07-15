@@ -1,16 +1,17 @@
-import pika, json
+import pika, json, pprint
 from utils.discord_webhooks import alert_customers
 from utils.db_mongo import insert_listing_archive
 from datetime import datetime
 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host="housingo://guest:guest@rabbitmq"))
+connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
 channel = connection.channel()
 channel.queue_declare(queue="listings")
 
 
 def notify(listing: str):
-    alert_customers(listing, "test")
+    # alert_customers(listing, "test")
+    pass
 
 
 def on_request(ch, method, props, body):
@@ -20,12 +21,13 @@ def on_request(ch, method, props, body):
     found_at = json.loads(listing_dict)["found_at"]
     print("Found apartment at: " + str(found_at) + " now: " + str(now))
 
-    listing_url = json.loads(listing_dict)["listing_url"]
-    insert_listing_archive(listing_url, int(found_at))
+    listing_url = json.loads(listing_dict)["url"]
+    # insert_listing_archive(listing_url, int(found_at), listing_dict["city"])
 
     if int(now) - int(found_at) < 100:
         notify(listing_url)
 
+    pprint.pprint(listing_dict)
     ch.basic_publish(
         exchange="",
         routing_key=str(props.reply_to),

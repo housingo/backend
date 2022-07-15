@@ -16,7 +16,7 @@ services:
       - housingo
 
   notificiation-service:
-    build: ./notification-service
+    build: ./notification-service-events
     hostname: localhost
     restart: always
     environment:
@@ -28,6 +28,8 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8002:8002"
+    depends_on:
+      - rabbit-mq
     networks:
       - housingo
 
