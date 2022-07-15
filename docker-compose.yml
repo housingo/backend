@@ -16,7 +16,7 @@ services:
       - housingo
 
   notificiation-service:
-    build: ./notification-service-events
+    build: notification-service
     hostname: localhost
     restart: always
     environment:
