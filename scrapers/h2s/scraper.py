@@ -1,19 +1,22 @@
-import requests, time, json, pika
+import requests, time, json, pika, re
 from bs4 import BeautifulSoup
 
+BASE_URL = 'https://holland2stay.com/residences/'
 
-def findBookDirectly(soup,list):
+
+def findBookDirectly(soup, list):
     element = soup.find_all('span', text=re.compile(".*BOOK DIRECTLY.*"))
     for item in element:
-        address = item.parent.text.lower().replace('book directly','').replace('parking included','').replace('unfurnished','').replace('semi-furnished','').strip().replace(' ','-')
+        address = item.parent.text.lower() \
+            .replace('book directly', '') \
+            .replace('parking included', '') \
+            .replace('unfurnished', '') \
+            .replace('semi-furnished', '') \
+            .replace("premium inventory", "") \
+            .replace("student only", "") \
+            .strip().replace(' ', '-')
         list.append(BASE_URL + address + '.html')
 
-def report_crash(city_id):
-    scraper_city = get_city_from_url(city_id)
-    requests.post(
-        "https://discordapp.com/api/webhooks/941042256310304798/sQfQ3s5qIu7w3h5uQAH7I8COgNpmNw1YxrO58Yq4vv7JbXvqZh8bNxaOiuBCggrAjvds",
-        data={"content": "H2S scraper from city " + scraper_city + " has crashed!"},
-    )
 
 city_ids = {
     29: "eindhoven",
@@ -32,7 +35,6 @@ search_url = "https://holland2stay.com/residences.html?available_to_book=179&cit
 list = []
 
 
-
 def scraper():
     try:
         connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
@@ -43,7 +45,7 @@ def scraper():
     except Exception:
         print("Could not connect to Rabbit MQ")
 
-    for i in range(1, 4):
+    for i in range(1, 3):
 
         html_content = ""
 
