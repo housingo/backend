@@ -33,45 +33,36 @@ city_ids = {
 scraper_city_id = 29
 search_url = "https://holland2stay.com/residences.html?available_to_book=179&city=" + str(scraper_city_id)
 list = []
-
+dict_list = []
 
 def scraper():
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
-        channel = connection.channel()
+        dict_list.clear()
+        for i in range(1, 3):
 
-        channel.queue_declare(queue="listings")
+            html_content = ""
 
-    except Exception:
-        print("Could not connect to Rabbit MQ")
+            print("Fetching urls from page: " + i.__str__())
+            if i == 1:
+                html_content = requests.get(search_url)
 
-    for i in range(1, 3):
+            if i > 1:
+                html_content = requests.get(search_url + "?p=" + i.__str__())
 
-        html_content = ""
+            property_list = BeautifulSoup(html_content.content, "html.parser")
+            findBookDirectly(property_list, list)
 
-        print("Fetching urls from page: " + i.__str__())
-        print(search_url)
-        if i == 1:
-            html_content = requests.get(search_url)
+            for url in list:
+                listing = {
+                    "url": url,
+                    "found_at": time.time(),
+                    "city": city_ids.get(scraper_city_id),
+                    "website": "h2s"
+                }
+                dict_list.append(listing)
 
-        if i > 1:
-            html_content = requests.get(search_url + "?p=" + i.__str__())
+        return dict_list
 
-        property_list = BeautifulSoup(html_content.content, "html.parser")
-        findBookDirectly(property_list, list)
 
-        for item in list:
-            listing = {
-                "url": item,
-                "found_at": time.time(),
-                "city": city_ids.get(scraper_city_id)
-            }
-            channel.basic_publish(
-                exchange="",
-                routing_key="listings",
-                body=json.dumps(listing)
-            )
 
-        list.clear()
 
-    connection.close()
+

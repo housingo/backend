@@ -1,13 +1,30 @@
-import schedule, requests
-from .h2s.scraper import scraper as h2s_scraper
+import schedule, requests, time, json, pika, threading
+from threading import Lock
+from pprint import pprint
+from h2s.scraper import scraper as scraper_h2s
 
-# 29 Eind
-H2S_SEARCH_URL = "https://holland2stay.com/residences.html?available_to_book=179&city=" + 29
+listings = []
+mutex = Lock()
+
+connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+channel = connection.channel()
+channel.queue_declare(queue="listings")
+
+# Push all new listings to the RabbitMQ queue
+def populate_messaging_queue():
+    try:
+        for item in listings:
+            channel.basic_publish(
+                exchange="",
+                routing_key="listings",
+                body=json.dumps(item)
+            )
+        listings.clear()
+    except Exception:
+        print("Could not connect to Rabbit MQ")
 
 
-def run_scrapers():
-    h2s_scraper()
-
+# Report downtime in uptime channel in Discord
 def report_crash():
     requests.post(
         "https://discordapp.com/api/webhooks/997554015783100476/nltop35cmxVMDKKMtLC8kYz_AOKZdAa4VvGgQkM-Msjbm14X2DewK971BJF54y8arLZ6",
@@ -15,10 +32,37 @@ def report_crash():
     )
 
 
-run_scrapers()
-schedule.every(1).minutes.do(run_scrapers)
-while True:
-    try:
-        schedule.run_pending()
-    except Exception:
-        report_crash()
+def run_threaded(job_func):
+    job_thread = threading.Thread(target=job_func)
+    job_thread.start()
+
+
+# Shared resource safe thread implementation
+def job_h2s():
+    print("I'm running on thread %s" % threading.current_thread())
+
+    mutex.acquire()
+    for item in scraper_h2s():
+        listings.append(item)
+    pprint('Sending results to RabbitMQ Queue...')
+    populate_messaging_queue()
+
+    pprint('Done')
+    mutex.release()
+
+
+# Scheduler code
+def run_scrapers():
+    # run the h2s thread every 30s
+    schedule.every(30).seconds.do(run_threaded, job_h2s)
+    while True:
+        try:
+            schedule.run_pending()
+            time.sleep(1)
+        except Exception:
+            connection.close()
+            report_crash()
+
+
+if __name__ == "__main__":
+        run_scrapers()
