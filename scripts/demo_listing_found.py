@@ -2,20 +2,46 @@ import pika
 import json
 from datetime import datetime
 
+list = []
 test_listing = {
-    "listing_url": "https://holland2stay.com/residences/victoriapark-828.html?city=0",
+    "url": "https://holland2stay.com/residences/victoriapark-828.html",
     "found_at": int(datetime.timestamp(datetime.now())),
+    "city": "test",
+    "website": "test",
 }
 
+list.append(test_listing)
 connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+
 channel = connection.channel()
 
-channel.queue_declare(queue="listings")
 
-channel.basic_publish(
-    exchange="",
-    routing_key="listings",
-    body=json.dumps(test_listing),
-)
+def populate_messaging_queue():
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+    channel = connection.channel()
+
+    channel.exchange_declare(exchange="listings", exchange_type="fanout")
+    channel.basic_publish(
+        exchange="listings",
+        routing_key="",
+        body=json.dumps(list),
+    )
+    # messages.clear()
+
+    connection.close()
+
+
+# channel.queue_declare(queue="listings")
+# channel.exchange_declare(exchange="listings", exchange_type="fanout")
+# channel.basic_publish(
+#     exchange="listings",
+#     routing_key="",
+#     body=json.dumps(list),
+# )
+if __name__ == "__main__":
+
+    populate_messaging_queue()
+
 # cleanup connection
-connection.close()
+# connection.close()
