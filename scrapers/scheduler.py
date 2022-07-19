@@ -3,25 +3,29 @@ from threading import Lock
 from pprint import pprint
 from h2s.scraper import scraper as scraper_h2s
 
-listings = []
+messages = []
 mutex = Lock()
-
-connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
-channel = connection.channel()
-channel.queue_declare(queue="listings")
 
 # Push all new listings to the RabbitMQ queue
 def populate_messaging_queue():
-    try:
-        for item in listings:
-            channel.basic_publish(
-                exchange="",
-                routing_key="listings",
-                body=json.dumps(item)
-            )
-        listings.clear()
-    except Exception:
-        print("Could not connect to Rabbit MQ")
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+    channel = connection.channel()
+
+    # channel.queue_declare(queue="listings_test")
+    channel.basic_publish(
+        exchange="",
+        routing_key="listings",
+        body=json.dumps(messages),
+    )
+    messages.clear()
+
+    connection.close()
+
+
+# except Exception as e:
+#     print("Error: " + str(e))
+#     print("Could not connect to Rabbit MQ")
 
 
 # Report downtime in uptime channel in Discord
@@ -43,26 +47,49 @@ def job_h2s():
 
     mutex.acquire()
     for item in scraper_h2s():
-        listings.append(item)
-    pprint('Sending results to RabbitMQ Queue...')
+        messages.append(item)
+
+    messages.append(
+        {
+            "url": "testing",
+            "found_at": 100,
+            "city": "test",
+            "website": "test",
+        }
+    )
+    pprint("Sending results to RabbitMQ Queue...")
     populate_messaging_queue()
 
-    pprint('Done')
+    pprint("Done")
     mutex.release()
 
 
 # Scheduler code
+# def run_scrapers():
+#     # run the h2s thread every 30s
+#     schedule.every(30).seconds.do(run_threaded, job_h2s)
+#     while True:
+#         try:
+#             schedule.run_pending()
+#             time.sleep(1)
+#         except Exception:
+#             connection.close()
+#             report_crash()
 def run_scrapers():
-    # run the h2s thread every 30s
-    schedule.every(30).seconds.do(run_threaded, job_h2s)
-    while True:
-        try:
-            schedule.run_pending()
-            time.sleep(1)
-        except Exception:
-            connection.close()
-            report_crash()
+    try:
+        run_threaded(job_h2s)
+    except Exception:
+        report_crash()
 
 
 if __name__ == "__main__":
-        run_scrapers()
+    messages.append(
+        {
+            "url": "testing",
+            "found_at": 100,
+            "city": "test",
+            "website": "test",
+        }
+    )
+    populate_messaging_queue()
+    # run_scrapers()

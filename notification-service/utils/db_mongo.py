@@ -25,8 +25,14 @@ def get_city_from_url(url: str):
     return city_ids.get(int(url[url.find("city=") + 5 : len(url)]))
 
 
-def insert_listing_archive(_url: string, _time: int, _city):
-    collection_selected_city = db["listings_" + _city]
+def insert_listing_archive(listing: dict):
+    collection_selected = db["listings_" + listing["website"]]
+    collection_selected.insert_one(listing)
 
-    listing_dict = {"url": _url, "found_at": _time}
-    collection_selected_city.insert_one(listing_dict)
+
+def check_in_archive(listing: dict):
+    collection_selected = db["listings_" + listing["website"]]
+    if collection_selected.find_one(listing) is None:
+        return False
+
+    return True
