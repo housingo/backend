@@ -11,18 +11,37 @@ test_listing = {
 }
 
 list.append(test_listing)
-
 connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
 
 channel = connection.channel()
 
 
-# channel.queue_declare(queue="listings")
+def populate_messaging_queue():
 
-channel.basic_publish(
-    exchange="",
-    routing_key="listings",
-    body=json.dumps(list),
-)
+    connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
+    channel = connection.channel()
+
+    channel.exchange_declare(exchange="listings", exchange_type="fanout")
+    channel.basic_publish(
+        exchange="listings",
+        routing_key="",
+        body=json.dumps(list),
+    )
+    # messages.clear()
+
+    connection.close()
+
+
+# channel.queue_declare(queue="listings")
+# channel.exchange_declare(exchange="listings", exchange_type="fanout")
+# channel.basic_publish(
+#     exchange="listings",
+#     routing_key="",
+#     body=json.dumps(list),
+# )
+if __name__ == "__main__":
+
+    populate_messaging_queue()
+
 # cleanup connection
-connection.close()
+# connection.close()

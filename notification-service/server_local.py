@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 def notify(listing_url: str, city: str):
-    alert_customers(listing_url, city)
+    alert_customers(listing_url, "test")
 
 
 def on_request(ch, method, props, body):
@@ -26,9 +26,6 @@ def on_request(ch, method, props, body):
                 listing_url,
             )
 
-            if int(now) - int(listing_found_at) < 300:
-                notify(listing_url, listing_city)
-
     ch.basic_publish(
         exchange="",
         routing_key=str(props.reply_to),
@@ -41,7 +38,7 @@ def on_request(ch, method, props, body):
 if __name__ == "__main__":
     try:
         print("Connecting to RabbitMQ")
-        connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
+        connection = pika.BlockingConnection(pika.ConnectionParameters("localhost"))
         channel = connection.channel()
         channel.exchange_declare(exchange="listings", exchange_type="fanout")
         result = channel.queue_declare(queue="", exclusive=True)

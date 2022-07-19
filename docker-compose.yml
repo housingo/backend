@@ -26,7 +26,7 @@ services:
       - housingo
 
   notification-service:
-    build: notification-service
+    build: ./notification-service
     hostname: localhost
     restart: always
     environment:
